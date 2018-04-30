@@ -1,0 +1,39 @@
+#include <iostream>
+#include <math.h>
+#include <list>
+#include <string>
+#include "project3.h"
+#include "windows.h"
+using namespace std;
+
+int main()
+{
+	// estabish array and set all values to 0
+	project3 myArray;
+	// make variables to put user coordinates into
+	int x1;
+	int y1;
+	int z1;
+	int x2;
+	int y2;
+	int z2;
+	
+	// execute addobstacles to have user put in coordinates for 1
+	myArray.addObstacles();
+	// have user input the navigation coordinates
+	cout << "\n Enter the first x coordinate.";
+	cin >> x1;
+	cout << "\n Enter the first y coordinate.";
+	cin >> y1;
+	cout << "\n Enter the first z coordinate.";
+	cin >> z1;
+	cout << "\n Enter the second x coordinate.";
+	cin >> x2;
+	cout << "\n Enter the second y coordinate.";
+	cin >> y2;
+	cout << "\n Enter the second z coordinate.";
+	cin >> z2;
+	myArray.mazeRunner(x1, y1, z1, x2, y2, z2);
+	
+	return 0;
+}
