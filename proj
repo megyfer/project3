@@ -1,0 +1,435 @@
+// Implementation file for the NumberArray class
+#include <iostream>
+#include "project3.h"
+#include <math.h>
+#include <list>
+#include <string>
+using namespace std;
+
+
+//********************************************
+// constructor member function                   *
+//********************************************
+
+
+project3::project3(){
+
+	 int myArray[10][10][10] = { 0 };
+	 
+
+
+
+}
+
+
+//********************************************
+// destructor~project3 member function                   *
+//********************************************
+
+project3::~project3(){
+	//delete[] myArray;
+}
+
+//********************************************
+// addObstacles member function                   *
+//********************************************
+
+void project3::addObstacles()			//part 1
+{
+	bool ask = false;
+	int xInput = 0;
+	int yInput = 0;
+	int zInput = 0;
+	string answer = "no";
+	while (ask == false){
+		cout << "\nWhere do you want the obstacle?";
+		cout << "\nPlease enter the x coordinate ";
+		cin >> xInput;
+		cout << "\nPlease enter the y coordinate ";
+		cin >> yInput;
+		cout << "\nPlease enter the z coordinate ";
+		cin >> zInput;
+		myArray[xInput][yInput][zInput] = 1;
+		cout << "Would you like to add another obstacle?";
+		string str1;
+		cin >> str1;
+		if (str1.compare(answer) == 0)
+		{
+			ask = true;
+		}
+	}
+	bool f = false;
+	int look = 1;
+	int i = 0;
+	for (int x = 0; x < 10; x++)
+	{
+		for (int y = 0; y < 10; y++)
+		{
+			for (int z = 0; z < 10; z++)
+			{
+				if (myArray[x][y][z] == look)
+				{
+					f = true;
+					cout << "1 found at [" << x << "],[" << y << "],[" << z << "]\n";
+
+				}
+
+			}
+		}
+	}
+	if (f == false)
+	{
+		cout << "Value not found.";
+	}
+
+}
+//********************************************
+// RadarDetector member function                   *
+//********************************************
+
+bool project3::RadarDetector(int x, int y, int z)		//part 2
+{
+	bool onethere = false;
+	if (myArray[x][y][z] == 1)
+	{
+		onethere = true;
+	}
+	return onethere;
+}
+//********************************************
+// navigator member function                *
+//********************************************
+
+void project3::navigator(int x1, int y1, int z1, int x2, int y2, int z2)		//part 3
+{
+	while (x1 != x2)
+	{
+		while (y1 != y2){
+			while ((z1 != z2)){
+
+				if (z1 != z2){
+					if (lessIsCloser(z1, z2) == true)
+					{
+						z1 = z1 - 1;
+					}
+					else{ z1 = z1 + 1; }
+				}
+
+
+				if (y1 != y2){
+					if (lessIsCloser(y1, y2) == true)
+					{
+						y1 = y1 - 1;
+					}
+					else { y1 = y1 + 1; }
+				}
+
+
+				if (x1 != x2){
+					if (lessIsCloser(x1, x2) == true)
+					{
+						x1 = x1 - 1;
+					}
+					else{ x1 = x1 + 1; }
+				}
+				cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+			}
+
+			if (x1 != x2){
+				if (lessIsCloser(x1, x2) == true)
+				{
+					x1 = x1 - 1;
+				}
+				else{ x1 = x1 + 1; }
+			}
+			if (y1 != y2){
+				if (lessIsCloser(y1, y2) == true)
+				{
+					y1 = y1 - 1; cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+				else {
+					y1 = y1 + 1;
+					cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+			}
+
+
+		}
+		if (x1 != x2){
+			if (lessIsCloser(x1, x2) == true)
+			{
+				x1 = x1 - 1;
+			}
+			else{ x1 = x1 + 1; }
+			cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+		}
+
+	}
+
+
+
+}
+
+//********************************************
+// lessIsCloser member function                *
+//********************************************
+
+bool project3::lessIsCloser(int one, int two)		//part of part 3
+{
+	bool ya = false;
+	int less = one - two;
+	int more = two - one;
+	if (less > more)
+	{
+		//one is bigger
+		ya = true;
+	}
+	return ya;
+
+}
+//********************************************
+// mazeRunner member function                 *
+//********************************************
+
+void project3::mazeRunner(int x1, int y1, int z1, int x2, int y2, int z2) //part 4
+{
+	bool ab = false;
+	bool bc = false;
+	bool cd = false;
+	if (x1 == x2){ ab = true; }
+	if (y1 == y2){ bc = true; }
+	if (z1 == z2){ cd = true; }
+	if (((ab == true) + (bc == true) + (cd == true)) != 3){
+		mazeff(x1, y1, z1, x2, y2, z2);
+	}
+	
+}
+
+//********************************************
+// mazeff member function                 *
+//********************************************
+
+void project3::mazeff(int x1, int y1, int z1, int x2, int y2, int z2){
+
+	bool unequal = false;
+	if (x1 != x2) { unequal = true; }
+	if (y1 != y2) { unequal = true; }
+	if (z1 != z2) { unequal = true; }
+	while (unequal == true){
+
+		if (z1 != z2){
+
+			//cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+			if (lessIsCloser(z1, z2) == true)
+			{
+				z1 = z1 - 1;
+				if (RadarDetector(x1, y1, z1) == true)
+				{
+					//z1 = z1 + 1;
+					y1 = y1 + 1;
+					if (RadarDetector(x1, y1, z1) == true)
+					{
+						y1 = y1 - 1;
+						x1 = x1 + 1;
+						if (RadarDetector(x1, y1, z1) == true)
+						{
+							x1 = x1 - 1;
+							y1 = y1 - 1;
+							if (RadarDetector(x1, y1, z1) == true)
+							{
+								y1 = y1 + 1;
+								x1 = x1 - 1;
+								if (RadarDetector(x1, y1, z1) == true)
+								{
+									cout << "what";
+								}
+							}
+						}
+					}
+
+					cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+
+			}
+			else
+			{
+				z1 = z1 + 1;
+				if (RadarDetector(x1, y1, z1) == true)
+				{
+					//z1 = z1 - 1;
+					y1 = y1 + 1;
+					if (RadarDetector(x1, y1, z1) == true)
+					{
+						y1 = y1 - 1;
+						x1 = x1 + 1;
+						if (RadarDetector(x1, y1, z1) == true)
+						{
+							x1 = x1 - 1;
+							y1 = y1 - 1;
+							if (RadarDetector(x1, y1, z1) == true)
+							{
+								y1 = y1 + 1;
+								x1 = x1 - 1;
+								if (RadarDetector(x1, y1, z1) == true)
+								{
+									cout << "what 2";
+								}
+							}
+						}
+					}
+					cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+
+			}
+		}
+
+
+		if (y1 != y2){
+			if (lessIsCloser(y1, y2) == true)
+			{
+				y1 = y1 - 1;
+				if (RadarDetector(x1, y1, z1) == true)
+				{
+					//y1 = y1 + 1;
+					z1 = z1 + 1;
+					if (RadarDetector(x1, y1, z1) == true)
+					{
+						z1 = z1 - 1;
+						x1 = x1 + 1;
+						if (RadarDetector(x1, y1, z1) == true)
+						{
+							x1 = x1 - 1;
+							z1 = z1 - 1;
+							if (RadarDetector(x1, y1, z1) == true)
+							{
+								z1 = z1 + 1;
+								x1 = x1 - 1;
+								if (RadarDetector(x1, y1, z1) == true)
+								{
+									cout << "what 3";
+								}
+							}
+						}
+						cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+					}
+
+				}
+				else if (RadarDetector(x1, y1, z1) == false)
+				{
+					//y1 = y1 - 1;
+				}
+			}
+
+			else
+			{
+				y1 = y1 + 1;
+				if (RadarDetector(x1, y1, z1) == true)
+				{
+					//y1 = y1 - 1;
+					z1 = z1 + 1;
+					if (RadarDetector(x1, y1, z1) == true)
+					{
+						z1 = z1 - 1;
+						x1 = x1 + 1;
+						if (RadarDetector(x1, y1, z1) == true)
+						{
+							x1 = x1 - 1;
+							z1 = z1 - 1;
+							if (RadarDetector(x1, y1, z1) == true)
+							{
+								z1 = z1 + 1;
+								x1 = x1 - 1;
+								if (RadarDetector(x1, y1, z1) == true)
+								{
+									cout << "what 4";
+								}
+							}
+						}
+						cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+					}
+					//cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+				else if (RadarDetector(x1, y1, z1) == false)
+				{
+
+				}
+			}
+			//cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+		}
+
+
+		if (x1 != x2){
+			if (lessIsCloser(x1, x2) == true)
+			{
+				x1 = x1 - 1;
+				if (RadarDetector(x1, y1, z1) == true)
+				{
+					//x1 = x1 + 1;
+					z1 = z1 + 1;
+					if (RadarDetector(x1, y1, z1) == true)
+					{
+						z1 = z1 - 1;
+						y1 = y1 + 1;
+						if (RadarDetector(x1, y1, z1) == true)
+						{
+							y1 = y1 - 1;
+							z1 = z1 - 1;
+							if (RadarDetector(x1, y1, z1) == true)
+							{
+								z1 = z1 + 1;
+								y1 = y1 - 1;
+								if (RadarDetector(x1, y1, z1) == true)
+								{
+									cout << "what 5";
+								}
+							}
+						}
+						cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+					}//cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+				else if (RadarDetector(x1, y1, z1) == false)
+				{
+					//x1 = x1 - 1;
+				}//cout << "\n7[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+			}
+			else
+			{
+				x1 = x1 + 1;
+				if (RadarDetector(x1, y1, z1) == true)
+				{
+					//	x1 = x1 - 1;
+					z1 = z1 + 1;
+					if (RadarDetector(x1, y1, z1) == true)
+					{
+						z1 = z1 - 1;
+						y1 = y1 + 1;
+						if (RadarDetector(x1, y1, z1) == true)
+						{
+							y1 = y1 - 1;
+							z1 = z1 - 1;
+							if (RadarDetector(x1, y1, z1) == true)
+							{
+								z1 = z1 + 1;
+								y1 = y1 - 1;
+								if (RadarDetector(x1, y1, z1) == true)
+								{
+									cout << "what 6";
+								}
+							}
+						}
+						cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+					}//cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+				}
+				else if (RadarDetector(x1, y1, z1) == false)
+				{
+					//x1 = x1 + 1;
+				}
+			}
+			//cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+		}
+		cout << "\n[" << x1 << "],[" << y1 << "],[" << z1 << "]";
+
+		if (x1 == x2){ if (y1 == y2){ if (z1 == z2){ unequal = false; } } }
+	}
+}
+
